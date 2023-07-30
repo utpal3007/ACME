@@ -3,16 +3,16 @@ provider "azurerm" {
 }
 
 # Create a resource group
-resource "azurerm_resource_group" "example" {
-  name     = "example-resource-group"
-  location = "East US"  # Change this to your desired Azure region
+resource "azurerm_resource_group" "acme_rg" {
+  name     = "acme_rg"
+  location = "West Europe"  
 }
 
 # Create an Azure App Service Plan for your web app
-resource "azurerm_app_service_plan" "example" {
-  name                = "example-app-service-plan"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+resource "azurerm_app_service_plan" "acme-svc-plan" {
+  name                = "acme-svc-plan"
+  location            = azurerm_resource_group.acme_rg.location
+  resource_group_name = azurerm_resource_group.acme_rg.name
   kind                = "Linux"  # For Linux web app plan
   reserved            = true    # Set this to true for Linux plans
 
@@ -23,12 +23,12 @@ resource "azurerm_app_service_plan" "example" {
   }
 }
 
-# Create a web app (main Azure App Service) and enable Local Git deployment
-resource "azurerm_app_service" "example" {
+# Create a web app and enable Local Git deployment
+resource "azurerm_app_service" "acme-app-svc" {
   name                = "acme-app-svc"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
-  app_service_plan_id = azurerm_app_service_plan.example.id
+  location            = azurerm_resource_group.acme_rg.location
+  resource_group_name = azurerm_resource_group.acme_rg.name
+  app_service_plan_id = azurerm_app_service_plan.acme-svc-plan.id
 
   site_config {
     always_on = true
@@ -42,19 +42,19 @@ resource "azurerm_app_service" "example" {
 }
 
 # Create a deployment slot
-resource "azurerm_app_service_slot" "example" {
+resource "azurerm_app_service_slot" "acme_ds" {
   name                = "staging"  # Change the slot name as needed
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
-  app_service_name    = azurerm_app_service.example.name
-  app_service_plan_id = azurerm_app_service_plan.example.id
+  location            = azurerm_resource_group.acme_rg.location
+  resource_group_name = azurerm_resource_group.acme_rg.name
+  app_service_name    = azurerm_app_service.acme-app-svc.name
+  app_service_plan_id = azurerm_app_service_plan.acme-svc-plan.id
 }
 
 # Output the URLs of the main app and the deployment slot
 output "main_app_url" {
-  value = azurerm_app_service.example.default_site_hostname
+  value = azurerm_app_service.acme-app-svc.default_site_hostname
 }
 
 output "slot_url" {
-  value = azurerm_app_service_slot.example.default_site_hostname
+  value = azurerm_app_service_slot.acme_ds.default_site_hostname
 }
