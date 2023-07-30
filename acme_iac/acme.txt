@@ -1,0 +1,121 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_app_service.acme-app-svc will be created
+  + resource "azurerm_app_service" "acme-app-svc" {
+      + app_service_plan_id               = (known after apply)
+      + app_settings                      = (known after apply)
+      + client_affinity_enabled           = false
+      + client_cert_enabled               = false
+      + client_cert_mode                  = (known after apply)
+      + custom_domain_verification_id     = (known after apply)
+      + default_site_hostname             = (known after apply)
+      + enabled                           = true
+      + https_only                        = false
+      + id                                = (known after apply)
+      + key_vault_reference_identity_id   = (known after apply)
+      + location                          = "westeurope"
+      + name                              = "acme-app-svc"
+      + outbound_ip_address_list          = (known after apply)
+      + outbound_ip_addresses             = (known after apply)
+      + possible_outbound_ip_address_list = (known after apply)
+      + possible_outbound_ip_addresses    = (known after apply)
+      + resource_group_name               = "acme_rg"
+      + site_credential                   = (known after apply)
+
+      + identity {
+          + principal_id = (known after apply)
+          + tenant_id    = (known after apply)
+          + type         = "SystemAssigned"
+        }
+
+      + site_config {
+          + acr_use_managed_identity_credentials = false
+          + always_on                            = true
+          + dotnet_framework_version             = "v4.0"
+          + ftps_state                           = (known after apply)
+          + http2_enabled                        = false
+          + ip_restriction                       = (known after apply)
+          + linux_fx_version                     = (known after apply)
+          + local_mysql_enabled                  = (known after apply)
+          + managed_pipeline_mode                = (known after apply)
+          + min_tls_version                      = (known after apply)
+          + number_of_workers                    = (known after apply)
+          + remote_debugging_enabled             = false
+          + remote_debugging_version             = (known after apply)
+          + scm_ip_restriction                   = (known after apply)
+          + scm_type                             = "LocalGit"
+          + scm_use_main_ip_restriction          = false
+          + vnet_route_all_enabled               = (known after apply)
+          + websockets_enabled                   = (known after apply)
+          + windows_fx_version                   = (known after apply)
+        }
+    }
+
+  # azurerm_app_service_plan.acme-svc-plan will be created
+  + resource "azurerm_app_service_plan" "acme-svc-plan" {
+      + id                           = (known after apply)
+      + kind                         = "Linux"
+      + location                     = "westeurope"
+      + maximum_elastic_worker_count = (known after apply)
+      + maximum_number_of_workers    = (known after apply)
+      + name                         = "acme-svc-plan"
+      + reserved                     = true
+      + resource_group_name          = "acme_rg"
+
+      + sku {
+          + capacity = (known after apply)
+          + size     = "B1"
+          + tier     = "Basic"
+        }
+    }
+
+  # azurerm_app_service_slot.acme_ds will be created
+  + resource "azurerm_app_service_slot" "acme_ds" {
+      + app_service_name                = "acme-app-svc"
+      + app_service_plan_id             = (known after apply)
+      + app_settings                    = (known after apply)
+      + client_affinity_enabled         = (known after apply)
+      + default_site_hostname           = (known after apply)
+      + enabled                         = true
+      + https_only                      = false
+      + id                              = (known after apply)
+      + key_vault_reference_identity_id = (known after apply)
+      + location                        = "westeurope"
+      + name                            = "staging"
+      + resource_group_name             = "acme_rg"
+      + site_credential                 = (known after apply)
+    }
+
+  # azurerm_resource_group.acme_rg will be created
+  + resource "azurerm_resource_group" "acme_rg" {
+      + id       = (known after apply)
+      + location = "westeurope"
+      + name     = "acme_rg"
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + main_app_url = (known after apply)
+  + slot_url     = (known after apply)
+
+Warning: Deprecated Resource
+
+  with azurerm_app_service_plan.acme-svc-plan,
+  on main.tf line 13, in resource "azurerm_app_service_plan" "acme-svc-plan":
+  13: resource "azurerm_app_service_plan" "acme-svc-plan" {
+
+The `azurerm_app_service_plan` resource has been superseded by the `azurerm_service_plan` resource. Whilst this resource will continue to be available in the 2.x and 3.x releases it is feature-frozen for
+compatibility purposes, will no longer receive any updates and will be removed in a future major release of the Azure Provider.
+
+(and 5 more similar warnings elsewhere)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
